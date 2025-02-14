@@ -11,8 +11,8 @@ PIES = {
 }
 
 # PIES = {
-#     "VWRP": 0.50,
-#     "CNX1": 0.50,
+#     "VWRP": 1,
+#     # "CNX1": 0.50,
 # }
 
 iitu_holdings_df = pd.read_csv("holding/IITU_14_02_2025.csv", header=2)
