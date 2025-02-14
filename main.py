@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-INVESTMENT_AMOUNT = 16877.46
+INVESTMENT_AMOUNT = 18054.07
 
 PIES = {
     "VWRP": 0.40,
@@ -10,10 +10,9 @@ PIES = {
     "VEUA": 0.12,
 }
 
-# PIES = {
-#     "VWRP": 1,
-#     # "CNX1": 0.50,
-# }
+PIES = {
+    "VWRP": 0.9,
+}
 
 iitu_holdings_df = pd.read_csv("holding/IITU_14_02_2025.csv", header=2)
 iitu_holdings_df = iitu_holdings_df[
@@ -76,7 +75,7 @@ pie_holdings_df["amount_invested"] = (
 
 print(pie_holdings_df.head())
 
-pie_holdings_df.to_csv("pie_holdings.csv", index=False)
+pie_holdings_df.to_csv("results/pie_holdings.csv", index=False)
 
 
 pie_regions_df = (
@@ -90,4 +89,4 @@ pie_regions_df["percentage"] = (
     (pie_regions_df["amount_invested"] / total_investment) * 100
 ).round(2).astype(str) + "%"
 
-pie_regions_df.to_csv("pie_regions.csv", index=False)
+pie_regions_df.to_csv("results/pie_regions.csv", index=False)
