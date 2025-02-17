@@ -1,42 +1,43 @@
-import matplotlib.pyplot as plt
 import pandas as pd
 
-INVESTMENT_AMOUNT = 18054.07
+INVESTMENT_AMOUNT = 5000
+
 
 PIES = {
-    "VWRP": 0.40,
-    "CNX1": 0.33,
-    "VFEG": 0.15,
-    "VEUA": 0.12,
+    # "VUAG": 0.3,
+    # "CNX1": 0.35,
+    "VEUA": 0.3,
+    "ARCI": 0.4,
+    "VFEG": 0.3,
 }
 
-PIES = {
-    "VWRP": 0.9,
-}
+if "IITU" in PIES.keys():
+    iitu_holdings_df = pd.read_csv("holding/IITU_14_02_2025.csv", header=2)
+    iitu_holdings_df = iitu_holdings_df[
+        ["Ticker", "Name", "Sector", "Weight (%)", "Location"]
+    ]
+    iitu_holdings_df["Region"] = iitu_holdings_df["Location"].apply(
+        lambda x: "US" if x == "United States" else "-"
+    )
+    iitu_holdings_df.drop("Location", axis=1, inplace=True)
+    iitu_holdings_df.rename(
+        columns={"Name": "Holding name", "Weight (%)": "% of market value"},
+        inplace=True,
+    )
 
-iitu_holdings_df = pd.read_csv("holding/IITU_14_02_2025.csv", header=2)
-iitu_holdings_df = iitu_holdings_df[
-    ["Ticker", "Name", "Sector", "Weight (%)", "Location"]
-]
-iitu_holdings_df["Region"] = iitu_holdings_df["Location"].apply(
-    lambda x: "US" if x == "United States" else "-"
-)
-iitu_holdings_df.drop("Location", axis=1, inplace=True)
-iitu_holdings_df.rename(
-    columns={"Name": "Holding name", "Weight (%)": "% of market value"}, inplace=True
-)
-
-cnx1_holdings_df = pd.read_csv("holding/CNX1_14_02_2025.csv", header=2)
-cnx1_holdings_df = cnx1_holdings_df[
-    ["Ticker", "Name", "Sector", "Weight (%)", "Location"]
-]
-cnx1_holdings_df["Region"] = cnx1_holdings_df["Location"].apply(
-    lambda x: "US" if x == "United States" else "-"
-)
-cnx1_holdings_df.drop("Location", axis=1, inplace=True)
-cnx1_holdings_df.rename(
-    columns={"Name": "Holding name", "Weight (%)": "% of market value"}, inplace=True
-)
+if "CNX1" in PIES.keys():
+    cnx1_holdings_df = pd.read_csv("holding/CNX1_14_02_2025.csv", header=2)
+    cnx1_holdings_df = cnx1_holdings_df[
+        ["Ticker", "Name", "Sector", "Weight (%)", "Location"]
+    ]
+    cnx1_holdings_df["Region"] = cnx1_holdings_df["Location"].apply(
+        lambda x: "US" if x == "United States" else "-"
+    )
+    cnx1_holdings_df.drop("Location", axis=1, inplace=True)
+    cnx1_holdings_df.rename(
+        columns={"Name": "Holding name", "Weight (%)": "% of market value"},
+        inplace=True,
+    )
 
 # TODO - fix later
 
@@ -62,6 +63,7 @@ for etf, dist in PIES.items():
     pie_holdings_df = pd.concat([pie_holdings_df, holdings_df], ignore_index=True)
     # print(holdings_df)
 
+pie_holdings_df["Ticker"] = pie_holdings_df["Ticker"].astype(str)
 pie_holdings_df = pie_holdings_df.groupby(["Ticker", "Region"], as_index=False)[
     "pie_percentage"
 ].sum()
